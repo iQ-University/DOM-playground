@@ -1,43 +1,80 @@
 const numbers = [1, 2, 3, 4, 5, 6, 7];
 
-const addWithOneImpure = function () {
-    for (let i = 0; i < numbers.length; i++) {
-        numbers[i] += 1;
+// Impure
+
+const addWithOneImpureWithFor = function (inputArray) {
+    for (let i = 0; i < inputArray.length; i++) {
+        inputArray[i] += 1;
     }
 }
 
-const addWithOnePure = function () {
-    return numbers.map(function (element) {
+/*
+* forEach() does not mutate the array on which it is called. (However, callback may do so)
+* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+*/
+
+const addWithOneImpureWithForEach = function (inputArray) {
+    inputArray.forEach(function (element, index, array) {
+        array[index] += 1;
+    })
+}
+
+// Pure
+
+
+const addWithOnePureWithMap = function (inputArray) {
+    return inputArray.map(function (element) {
         return element + 1;
     })
 }
 
-addWithOnePure();
-addWithOneImpure();
+const addWithOnePureWithForEach = function (inputArray) {
+    const result = [];
+    inputArray.forEach(function (element) {
+        result.push(element + 1);
+    })
 
-console.log(numbers);
+    return result;
+}
 
-/*
-    Daca am folosi exemplul urmator: 
+const addWithOnePureWithFor = function (inputArray) {
+    const result = [];
+    for (let i = 0; i < inputArray.length; i++) {
+        result.push(inputArray[i] + 1);
+    }
 
-    const addWithOneImpure = function () {
-    for (let myElem of number) { 
-        myElem += 1; 
-        
-        // => Nu s-ar produce schimbari 
-        //pentru ca noi schimbam valoarea lui myElem, nu a array-ului nostru
+    return result;
+}
+
+
+// returneaza un array :
+
+const resultFromMap = addWithOnePureWithMap(numbers);
+console.log(resultFromMap, 'new array from map');
+
+const resultFromForEach = addWithOnePureWithForEach(numbers);
+console.log(resultFromForEach, 'new array from forEach');
+
+const resultFromFor = addWithOnePureWithFor(numbers);
+console.log(resultFromFor, 'new array from for');
+
+console.log(numbers, 'orginal array remains the same!');
+
+addWithOneImpureWithFor(numbers);
+console.log(numbers, 'orginal array is mutated!');
+
+addWithOneImpureWithForEach(numbers);
+console.log(numbers, 'orginal array is mutated again!');
+
+
+// De ce nu a mers in exemplul cu for of: 
+
+const addWithOneImpureWithForOf = function (array) {
+    for (let myElem of array) {
+        myElem += 1;
     }
 }
-
-Pentru ca forEach nu va face mutation pe referinta care o primeste ca parametru:
-'forEach() does not mutate the array on which it is called. (However, callback may do so)'
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
-
-Singurul mod prin care vom putea face mutation pe array-ul numbers cu forEach:
-
-const addWithOneImpure = function (param) {
-    numbers.forEach(function (element, i) {
-        numbers[i] += 2;
-    })
-}
+/*
+=> Nu s-ar produce schimbari in array-ul numbers
+pentru ca noi schimbam valoarea variabilei block scoped myElem, nu al array-ului primit ca si argument
 */
