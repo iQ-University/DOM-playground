@@ -21,7 +21,6 @@ const addWithOneImpureWithForEach = function (inputArray) {
 
 // Pure
 
-
 const addWithOnePureWithMap = function (inputArray) {
     return inputArray.map(function (element) {
         return element + 1;
